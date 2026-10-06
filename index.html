@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoFlow — Organize your day, one task at a time</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <main class="app-container">
+
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">TodoFlow</h1>
+                    <p class="brand-subtitle">Organize your day, one task at a time</p>
+                </div>
+            </div>
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle light/dark theme">
+                <svg id="themeIcon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+            </button>
+        </header>
+
+
+        <section class="stats-grid" aria-label="Task statistics">
+            <div class="stat-card total">
+                <div class="stat-info">
+                    <span class="stat-label">Total Tasks</span>
+                    <span class="stat-value" id="statTotal">0</span>
+                </div>
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-card completed">
+                <div class="stat-info">
+                    <span class="stat-label">Completed</span>
+                    <span class="stat-value" id="statCompleted">0</span>
+                </div>
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-card remaining">
+                <div class="stat-info">
+                    <span class="stat-label">Remaining</span>
+                    <span class="stat-value" id="statRemaining">0</span>
+                </div>
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="task-creator-card">
+            <div class="input-row-main">
+                <div class="input-wrapper">
+                    <input type="text" id="taskInput" class="task-input" placeholder="What needs to be done?"
+                        autocomplete="off">
+                </div>
+            </div>
+            <div class="input-row-options">
+                <div class="options-group">
+                    <select id="prioritySelect" class="custom-select" aria-label="Select task priority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium" selected>Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
+                    <input type="date" id="dueDateInput" class="date-input" aria-label="Select due date">
+                </div>
+                <button id="addTaskBtn" class="btn-add">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    <span>Add Task</span>
+                </button>
+            </div>
+        </section>
+
+
+        <section class="controls-bar">
+            <div class="filter-tabs" role="tablist">
+                <button class="filter-tab active" data-filter="all" role="tab">All</button>
+                <button class="filter-tab" data-filter="active" role="tab">Active</button>
+                <button class="filter-tab" data-filter="completed" role="tab">Completed</button>
+            </div>
+            <div class="search-clear-group">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search tasks...">
+                </div>
+                <button id="clearCompletedBtn" class="btn-clear-completed">Clear Completed</button>
+            </div>
+        </section>
+
+
+        <ul id="taskList" class="task-list" aria-label="Task list"></ul>
+
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+            </div>
+            <h3 class="empty-title">All clear!</h3>
+            <p class="empty-desc">No tasks match your current criteria. Create a new task above or adjust your filters.
+            </p>
+        </div>
+    </main>
+
+
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title">Clear Completed Tasks?</h3>
+            <p class="modal-desc">Are you sure you want to delete all completed tasks? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="cancelModalBtn" class="btn-cancel">Cancel</button>
+                <button id="confirmClearBtn" class="btn-confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
